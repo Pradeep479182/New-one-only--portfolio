@@ -1,9 +1,10 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useMemo, useState } from 'react'
 
 export default function EducationCard({ item, index }) {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false)
   const [previewIndex, setPreviewIndex] = useState(0)
+  const reduceMotion = useReducedMotion()
 
   const previewPages = useMemo(() => item.previewPages ?? [item.previewImage], [item.previewImage, item.previewPages])
   const currentPreview = previewPages[previewIndex] ?? previewPages[0]
@@ -23,7 +24,7 @@ export default function EducationCard({ item, index }) {
   }
 
   return <>
-    <motion.article className="education-card" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-70px' }} transition={{ delay: index * .16, duration: .65 }}>
+    <motion.article className="education-card" initial={reduceMotion ? false : { opacity: 0, x: 24, y: 28, rotateY: index % 2 ? 7 : -7, rotateX: 5, scale: .94 }} whileInView={reduceMotion ? undefined : { opacity: 1, x: 0, y: 0, rotateY: 0, rotateX: 0, scale: 1 }} viewport={{ once: true, margin: '-70px' }} transition={reduceMotion ? { duration: 0 } : { delay: index * .16, duration: .78, ease: [0.22, 1, 0.36, 1] }} whileHover={reduceMotion ? undefined : { y: -9, rotateX: 2, rotateY: index % 2 ? -2 : 2, scale: 1.015 }}>
       <div className="education-card-top"><span>0{index + 1}</span><span>{item.duration}</span></div>
       {item.badge && <span className="education-badge">{item.badge}</span>}
       <a className="education-institution" href={item.institutionUrl} target="_blank" rel="noopener noreferrer">{item.institution}</a>

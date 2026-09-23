@@ -36,7 +36,7 @@ export default function CinematicHero() {
         <motion.div className="hero-kicker" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .35 }}><Code2 size={14} /> software engineer</motion.div>
         <motion.h1 className="hero-name" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}>Pradeepan Rakavi</motion.h1>
         <motion.p className="hero-role" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .65 }}>Software Engineer</motion.p>
-        <motion.p className="hero-copy hero-typewriter" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .8 }}><TypewriterText text="Building digital experiences with intent." typingSpeed={90} startDelay={900} showCursor /></motion.p>
+        <motion.p className="hero-copy hero-typewriter" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .8 }}><TypewriterText text="Building meaningful digital experiences by transforming creative ideas into modern, user-focused, and innovative digital solutions through thoughtful design and clean, efficient code." typingSpeed={90} startDelay={900} showCursor /></motion.p>
         <motion.div className="hero-actions" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .82 }}><a className="button button--primary" href="#projects">View my work <ArrowUpRight size={16} /></a><a className="button button--ghost" href="#contact">Let&apos;s talk <MoveRight size={16} /></a></motion.div>
       </div>
     </div>

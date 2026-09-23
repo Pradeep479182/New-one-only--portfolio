@@ -1,4 +1,48 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Sparkles, Volume2, VolumeX } from 'lucide-react'
 import SectionTitle from './SectionTitle'
-export default function About() { return <section id="about" className="section about-section page-width"><SectionTitle eyebrow="01 / about" title={<>Curious by nature.<br />Precise by craft.</>} intro="A software engineering student who likes turning complicated ideas into clear, useful products." /><div className="about-grid"><motion.div className="about-statement" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}><Sparkles size={20} className="accent-icon" /><p>My work lives at the intersection of <strong>engineering, design, and intelligent systems.</strong> I care about the tiny details that make technology feel human.</p><a className="text-link" href="mailto:pradeeprakavi@gmail.com">More about my journey <ArrowUpRight size={15} /></a></motion.div><div className="about-facts"><div><span>currently</span><strong>BEng (Hons) in Software Engineering (Top-up)</strong><small>London Metropolitan University, ESOFT Metro Campus</small></div><div><span>focus</span><strong>Full-stack products</strong><small>React, Next.js, APIs & AI experiences</small></div><div><span>approach</span><strong>Thoughtful by default</strong><small>Accessible, fast, and made to last</small></div></div></div></section> }
+const aboutSummary = 'A software engineering student who likes turning complicated ideas into clear, useful products. My work lives at the intersection of engineering, design, and intelligent systems. I care about the tiny details that make technology feel human. I am currently studying a BEng Honours in Software Engineering top-up at London Metropolitan University through ESOFT Metro Campus.'
+
+export default function About() {
+	const [isSpeaking, setIsSpeaking] = useState(false)
+	const [voices, setVoices] = useState([])
+	const speechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window
+
+	useEffect(() => {
+		if (!speechSupported) return undefined
+		const updateVoices = () => setVoices(window.speechSynthesis.getVoices())
+		updateVoices()
+		window.speechSynthesis.addEventListener('voiceschanged', updateVoices)
+		return () => {
+			window.speechSynthesis.cancel()
+			window.speechSynthesis.removeEventListener('voiceschanged', updateVoices)
+		}
+	}, [speechSupported])
+
+	const toggleSummarySpeech = () => {
+		if (!speechSupported) return
+		if (isSpeaking) {
+			window.speechSynthesis.cancel()
+			setIsSpeaking(false)
+			return
+		}
+		const utterance = new window.SpeechSynthesisUtterance(aboutSummary)
+		const availableVoices = voices.length ? voices : window.speechSynthesis.getVoices()
+		const preferredVoice = availableVoices.find((voice) => /zira|samantha|victoria|karen|google uk english female|female/i.test(voice.name)) || availableVoices.find((voice) => /^en(-|_)/i.test(voice.lang))
+		if (preferredVoice) utterance.voice = preferredVoice
+		utterance.lang = preferredVoice?.lang || 'en-US'
+		utterance.rate = 0.95
+		utterance.pitch = 1.15
+		utterance.volume = 1
+		utterance.onstart = () => setIsSpeaking(true)
+		utterance.onend = () => setIsSpeaking(false)
+		utterance.onerror = () => setIsSpeaking(false)
+		window.speechSynthesis.cancel()
+		window.speechSynthesis.resume()
+		window.speechSynthesis.speak(utterance)
+		setIsSpeaking(true)
+	}
+
+	return <section id="about" className="section about-section page-width"><SectionTitle eyebrow="01 / about" title={<>Curious by nature.<br />Precise by craft.</>} intro="A software engineering student who likes turning complicated ideas into clear, useful products." /><div className="about-grid"><motion.div className="about-statement" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}><Sparkles size={20} className="accent-icon" /><p>My work lives at the intersection of <strong>engineering, design, and intelligent systems.</strong> I care about the tiny details that make technology feel human.</p><div className="about-actions"><a className="text-link" href="mailto:pradeeprakavi@gmail.com">More about my journey <ArrowUpRight size={15} /></a><button className="voice-summary-button" type="button" onClick={toggleSummarySpeech} disabled={!speechSupported} aria-label={isSpeaking ? 'Stop About summary' : 'Listen to About summary'} title={speechSupported ? (isSpeaking ? 'Stop summary' : 'Listen to summary') : 'Speech is not supported in this browser'}><span className="voice-summary-icon">{isSpeaking ? <VolumeX size={15} /> : <Volume2 size={15} />}</span>{speechSupported ? (isSpeaking ? 'Stop summary' : 'Listen to summary') : 'Voice unavailable'}</button></div></motion.div><div className="about-facts"><div><span>currently</span><strong>BEng (Hons) in Software Engineering (Top-up)</strong><small>London Metropolitan University, ESOFT Metro Campus</small></div><div><span>focus</span><strong>Full-stack products</strong><small>React, Next.js, APIs & AI experiences</small></div><div><span>approach</span><strong>Thoughtful by default</strong><small>Accessible, fast, and made to last</small></div></div></div></section>
+}

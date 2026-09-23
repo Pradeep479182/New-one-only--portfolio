@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight, Code2, X } from 'lucide-react'
 import { getFallbackProjectImage, getProjectImage } from '../services/projectImages'
 
-export default function ProjectCard({ project, index }) {
+export default function ProjectCard({ project, index, activeIndex = 0, onActivate, carousel = false }) {
   const [detailsOpen, setDetailsOpen] = useState(false)
+  const reduceMotion = useReducedMotion()
   const pointerX = useMotionValue(0)
   const pointerY = useMotionValue(0)
   const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [6, -6]), { stiffness: 180, damping: 18 })
@@ -39,8 +40,18 @@ export default function ProjectCard({ project, index }) {
     pointerY.set(0)
   }
 
+  const offset = index - activeIndex
+  const distance = Math.min(Math.abs(offset), 3)
+  const cardMotion = carousel ? {
+    x: `${offset * 76}%`,
+    y: offset === 0 ? 0 : Math.min(distance * 18, 54),
+    scale: offset === 0 ? 1 : Math.max(.68, 1 - distance * .12),
+    rotateY: offset * -16,
+    opacity: distance > 2 ? .25 : 1,
+  } : undefined
+
   return <>
-    <motion.article className="project-card" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ delay: index * .07, duration: .55 }} whileHover={{ y: -7 }} style={{ rotateX, rotateY, transformPerspective: 1000 }} onPointerMove={handlePointerMove} onPointerLeave={resetTilt} onClick={() => setDetailsOpen(true)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setDetailsOpen(true) } }} role="button" tabIndex="0" aria-label={`View details for ${project.name}`}>
+    <motion.article className={`project-card${carousel ? ' carousel-card' : ''}${index === activeIndex ? ' is-active' : ''}`} initial={carousel || reduceMotion ? false : { opacity: 0, y: 42, scale: .92, rotateX: 8 }} whileInView={carousel || reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1, rotateX: 0 }} animate={cardMotion} viewport={{ once: true, amount: .2, margin: '-40px' }} transition={carousel ? (reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 170, damping: 24, mass: .8 }) : { delay: index * .09, duration: .68, ease: [0.22, 1, 0.36, 1] }} whileHover={carousel ? { y: offset === 0 ? -8 : 0, scale: offset === 0 ? 1.015 : cardMotion.scale } : { y: -7 }} style={{ rotateX, rotateY: carousel ? undefined : rotateY, transformPerspective: 1000 }} onPointerMove={handlePointerMove} onPointerLeave={resetTilt} onClick={() => { onActivate?.(index); setDetailsOpen(true) }} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onActivate?.(index); setDetailsOpen(true) } }} role="button" tabIndex="0" aria-label={`View details for ${project.name}`}>
       <div className="project-thumbnail"><img src={image} alt={`${project.name} project preview`} onError={imageFallback} /><div className="project-thumbnail-overlay" /><span>{project.label.split(' / ')[0]}</span></div>
       <div className="project-body"><div className="project-top"><span className="project-type">{project.label.split(' / ')[1]}</span><span className="project-detail-link">View details <ArrowUpRight size={14} /></span></div><h3>{project.name}</h3><p>{project.summary}</p><div className="project-topics">{project.technologies.slice(0, 3).map((technology) => <span key={technology}>{technology}</span>)}</div><div className="project-links"><button type="button" onClick={(event) => { event.stopPropagation(); setDetailsOpen(true) }}>View Details <ArrowUpRight size={15} /></button></div></div>
     </motion.article>

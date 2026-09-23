@@ -54,3 +54,43 @@
 .voice-summary-button:disabled{cursor:not-allowed;opacity:.55}
 .nav-download{display:inline-flex!important;align-items:center;padding:9px 12px!important;border:1px solid #a18bff66;background:#a18bff1a;color:#dcd7ff!important;font-weight:700}.nav-download:hover{border-color:#a18bff;color:#fff!important}.nav-download:focus-visible{outline:2px solid #a18bff;outline-offset:3px}.button--voice{gap:7px;background:#a18bff1a;color:#e7e3ff;border-color:#a18bff66}.button--voice:hover{background:#a18bff2b;border-color:#a18bff}.button--voice span{display:grid;place-items:center}.button--voice:disabled{cursor:not-allowed;opacity:.55}
 @media(min-width:768px){.navbar{left:24px;right:24px;width:auto;max-width:1280px;margin-inline:auto;transform:none!important}}
+
+/* Responsive guardrails for narrow cards, long text, and intermediate tablet widths. */
+main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.technical-skills-grid,.education-timeline,.education-entry,.github-panel,.contact-email,.contact-note{min-width:0}
+.contact-email,.contact-note{width:100%;max-width:100%;overflow-wrap:anywhere}
+.contact-email span,.contact-note p,.about-facts strong,.about-facts small,.education-card,.project-body,.github-profile,.activity-row{overflow-wrap:anywhere;word-break:break-word}
+.about-grid,.contact-grid{gap:clamp(36px,7vw,100px)}
+.skills-grid,.technical-skills-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.section-heading{min-width:0}
+.section-heading h2,.section-heading p{min-width:0}
+.hero-content,.hero-content>*{min-width:0}
+.button{max-width:100%}
+@media(max-width:1100px) and (min-width:768px){
+  .page-width{width:calc(100% - 40px)}
+  .navbar{left:20px;right:20px;width:auto;padding-inline:14px}
+  .nav-links{gap:clamp(12px,2.2vw,24px)}
+  .nav-links a{font-size:11px}
+  .hero-content h1{font-size:clamp(46px,7vw,70px);letter-spacing:-3px}
+  .about-grid,.contact-grid{gap:clamp(28px,5vw,60px)}
+  .section{padding-block:clamp(90px,12vw,125px)}
+}
+@media(max-width:767px){
+  .page-width{width:calc(100% - 24px)}
+  .section-heading h2{font-size:clamp(34px,9vw,48px);letter-spacing:-1.5px}
+  .section-heading p{font-size:13px;line-height:1.6}
+  .about-statement p{font-size:clamp(18px,5.5vw,22px)}
+  .about-facts div{grid-template-columns:minmax(78px,25%) minmax(0,1fr)}
+  .about-facts small{grid-column:2}
+  .contact-email,.contact-note{padding:clamp(20px,6vw,30px)}
+  .project-grid{grid-template-columns:minmax(0,1fr)}
+  .technical-skills-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .education-card{padding:20px}
+}
+@media(max-width:460px){
+  .technical-skills-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-actions .button{flex:1 1 145px}
+  .about-actions{align-items:flex-start;gap:14px}
+  .about-facts div{grid-template-columns:1fr;gap:6px}
+  .about-facts small{grid-column:auto}
+}

@@ -37,6 +37,7 @@
 .project-carousel-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:#ffffff35;cursor:pointer;transition:transform .25s,background .25s}
 .project-carousel-dots button:hover,.project-carousel-dots button.is-active{background:#b5a8ff;transform:scale(1.45);box-shadow:0 0 12px #a18bff99}
 .project-carousel-dots button:focus-visible{outline:2px solid #a18bff;outline-offset:4px}
+.project-carousel-arrow{position:absolute;z-index:12;top:50%;display:grid;place-items:center;width:38px;height:38px;border:1px solid #ffffff24;background:#080912aa;color:#e9e9f1;box-shadow:0 10px 24px #0005;cursor:pointer;transform:translateY(-50%);transition:background .25s,border-color .25s,transform .25s}.project-carousel-arrow:hover{border-color:#a18bff88;background:#a18bff1f;transform:translateY(-50%) scale(1.06)}.project-carousel-arrow:focus-visible{outline:2px solid #a18bff;outline-offset:4px}.project-carousel-arrow--prev{left:clamp(8px,3vw,34px)}.project-carousel-arrow--next{right:clamp(8px,3vw,34px)}
 .project-card[role="button"]{cursor:pointer}.project-card[role="button"]:focus-visible{outline:2px solid #a18bff;outline-offset:4px}.project-modal-backdrop{position:fixed;z-index:40;inset:0;display:grid;place-items:center;padding:24px;background:#05060ccc;backdrop-filter:blur(12px)}.project-modal{position:relative;width:min(720px,100%);max-height:min(780px,calc(100vh - 48px));overflow:auto;background:#111421;border:1px solid #a18bff55;box-shadow:0 24px 80px #0009}.project-modal-close{position:absolute;z-index:1;top:14px;right:14px;display:grid;place-items:center;width:36px;height:36px;border:1px solid #ffffff22;background:#080912bb;color:#fff;cursor:pointer}.project-modal-image{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.project-modal-content{padding:28px}.project-modal-content h2{margin:14px 0 12px;color:#f4f3fb;font:600 34px/1.05 'Space Grotesk'}.project-modal-content p{max-width:620px;color:#a7a9b8;font-size:14px;line-height:1.75}.project-modal-meta{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:24px 0;color:#77798c;font:10px 'DM Mono';text-transform:uppercase}
 
 /* Updated Home hierarchy and the data-driven Technical Skills cards. */
@@ -131,6 +132,41 @@ main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.
   .hero-content{padding-bottom:88px}
   .hero-actions{gap:8px}
   .hero-actions .button{flex-basis:100%;justify-content:center}
+}
+
+/* Compact rhythm for smaller screens. */
+@media(max-width:767px){
+  .section{padding-block:68px}
+  .section-heading{margin-bottom:30px}
+  .section-heading p{margin-top:14px}
+  .about-grid,.contact-grid{gap:30px}
+  .about-statement{padding-top:18px}
+  .about-statement p{margin:16px 0 22px}
+  .about-facts div{padding:14px 0}
+  .technical-skill-groups{gap:28px}
+  .skills-category-rail{margin-bottom:20px}
+  .project-carousel{padding-top:12px;padding-bottom:48px}
+  .projects-footer{margin-top:26px}
+  .education-entry{padding-bottom:10px}
+  .education-card{margin-bottom:14px}
+  .contact-email,.contact-note{padding:18px 20px}
+}
+@media(max-width:460px){
+  .section{padding-block:56px}
+  .section-heading{margin-bottom:24px}
+  .about-grid,.contact-grid{gap:24px}
+  .about-actions{gap:10px}
+  .education-card{padding:16px}
+  .project-carousel{min-height:510px}
+  .project-carousel-track{height:420px}
+  .skills-carousel,.skills-carousel canvas{min-height:370px;height:370px}
+}
+
+@media(max-width:767px){
+  .hero-content{padding-bottom:clamp(122px,15svh,148px);transform:translateY(-18px)}
+}
+@media(max-width:460px){
+  .hero-content{padding-bottom:clamp(104px,16svh,128px);transform:translateY(-14px)}
 }
 
 /* Education uses a deeper dossier-like 3D plane than the other sections. */

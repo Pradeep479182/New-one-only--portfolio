@@ -162,6 +162,12 @@ main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.
   .skills-carousel,.skills-carousel canvas{min-height:370px;height:370px}
 }
 
+/* Center education panels without the timeline rail. */
+.education-line,.education-node{display:none!important}
+.education-timeline{max-width:820px;padding-inline:0}
+.education-entry,.education-entry:nth-of-type(odd),.education-entry:nth-of-type(even){display:flex;justify-content:center;min-height:0;gap:0}
+.education-entry .education-card,.education-entry:nth-of-type(odd) .education-card,.education-entry:nth-of-type(even) .education-card{width:min(100%,680px);margin-inline:auto;grid-column:auto;grid-row:auto}
+
 @media(max-width:767px){
   .hero-content{padding-bottom:clamp(122px,15svh,148px);transform:translateY(-18px)}
 }

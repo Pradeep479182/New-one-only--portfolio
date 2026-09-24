@@ -167,6 +167,19 @@ main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.
 .education-timeline{max-width:820px;padding-inline:0}
 .education-entry,.education-entry:nth-of-type(odd),.education-entry:nth-of-type(even){display:flex;justify-content:center;min-height:0;gap:0}
 .education-entry .education-card,.education-entry:nth-of-type(odd) .education-card,.education-entry:nth-of-type(even) .education-card{width:min(100%,680px);margin-inline:auto;grid-column:auto;grid-row:auto}
+.education-timeline{padding-top:clamp(12px,2vw,28px)}
+.education-entry+.education-entry{margin-top:clamp(12px,1.8vw,22px)}
+.education-entry .education-card{padding:clamp(18px,2.2vw,26px);width:min(100%,680px)}
+.education-card-top{flex-wrap:wrap;gap:8px}
+@media(max-width:767px){
+  .education-timeline{padding-top:8px}
+  .education-entry+.education-entry{margin-top:10px}
+  .education-entry .education-card{width:100%;padding:18px}
+}
+@media(max-width:460px){
+  .education-entry .education-card{padding:15px}
+  .education-card-top{margin-bottom:16px}
+}
 
 @media(max-width:767px){
   .hero-content{padding-bottom:clamp(122px,15svh,148px);transform:translateY(-18px)}

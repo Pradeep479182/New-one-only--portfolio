@@ -39,8 +39,8 @@ export default function EducationCard({ item, index }) {
 
     <AnimatePresence>
       {isCertificateOpen && currentPreview && (
-        <motion.div className="certificate-modal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsCertificateOpen(false)}>
-          <motion.div className="certificate-modal" initial={{ opacity: 0, y: 28, rotateX: 52, scale: 0.92 }} animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }} exit={{ opacity: 0, y: 18, rotateX: 42, scale: 0.96 }} transition={{ type: 'spring', stiffness: 220, damping: 22 }} onClick={(event) => event.stopPropagation()}>
+        <motion.div className="certificate-modal-backdrop" initial={{ opacity: 1 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsCertificateOpen(false)}>
+          <motion.div className="certificate-modal" initial={{ opacity: 1, y: 28, rotateX: 52, scale: 0.92 }} animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }} exit={{ opacity: 0, y: 18, rotateX: 42, scale: 0.96 }} transition={{ type: 'spring', stiffness: 220, damping: 22 }} onClick={(event) => event.stopPropagation()}>
             <button type="button" className="certificate-modal-close" aria-label="Close certificate" onClick={() => setIsCertificateOpen(false)}>×</button>
 
             <div className="certificate-modal-header">
@@ -54,7 +54,7 @@ export default function EducationCard({ item, index }) {
                 src={currentPreview}
                 alt={`${item.qualification} certificate page ${previewIndex + 1}`}
                 className="certificate-preview-image"
-                initial={{ opacity: 0, x: previewIndex > 0 ? 18 : -18, scale: 0.985 }}
+                initial={{ opacity: 1, x: previewIndex > 0 ? 18 : -18, scale: 0.985 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: previewIndex > 0 ? -18 : 18, scale: 0.985 }}
                 transition={{ duration: 0.32, ease: 'easeOut' }}

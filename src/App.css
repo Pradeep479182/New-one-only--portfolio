@@ -171,6 +171,11 @@ main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.
 .education-entry+.education-entry{margin-top:clamp(12px,1.8vw,22px)}
 .education-entry .education-card{padding:clamp(18px,2.2vw,26px);width:min(100%,680px)}
 .education-card-top{flex-wrap:wrap;gap:8px}
+.certificate-modal-backdrop{isolation:isolate;background:rgba(5,6,12,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.certificate-modal{position:relative;z-index:1;background:#111421;opacity:1;isolation:isolate}
+.certificate-modal-header,.certificate-frame,.certificate-page-controls,.certificate-modal-actions{position:relative;z-index:1}
+.certificate-frame{background:#f4f4f4;isolation:isolate;overflow:hidden}
+.certificate-preview-image{position:relative;z-index:1;display:block;background:#f4f4f4}
 @media(max-width:767px){
   .education-timeline{padding-top:8px}
   .education-entry+.education-entry{margin-top:10px}
@@ -197,6 +202,8 @@ main,.section,.page-width,.about-grid,.contact-grid,.skills-grid,.project-grid,.
 .education-card:after{content:'';position:absolute;top:0;left:26px;right:26px;height:1px;background:linear-gradient(90deg,transparent,#c6bdff99,transparent);transform:translateZ(18px);pointer-events:none}
 .education-line{filter:drop-shadow(0 0 8px #a18bff99);transform:translateZ(10px)}
 .education-node{transform-style:preserve-3d}
+.technical-skills-section .page-width,.github-section,.contact-section,.footer{perspective:1400px;transform-style:preserve-3d}
+.skills-category-rail,.github-panel,.contact-email,.contact-note,.footer{transform-style:preserve-3d;backface-visibility:hidden}
 @media(max-width:767px){.education-section{perspective:1100px}.education-card:after{left:20px;right:20px}}
 @media(prefers-reduced-motion:reduce){.education-card{will-change:auto}.education-card:before,.education-card:after{transform:none}}
 

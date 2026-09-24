@@ -1,1 +1,2 @@
-export default function Footer() { return <footer className="footer page-width"><span>© 2026 Pradeep Rakavi</span><span>Designed & built with React</span><a href="#home">back to top ↑</a></footer> }
+import { motion } from 'framer-motion'
+export default function Footer() { return <motion.footer className="footer page-width" initial={{ opacity: 0, rotateX: 12, y: 18 }} whileInView={{ opacity: 1, rotateX: 0, y: 0 }} viewport={{ once: true }} transition={{ duration: .65 }}><span>© 2026 Pradeep Rakavi</span><span>Designed & built with React</span><a href="#home">back to top ↑</a></motion.footer> }

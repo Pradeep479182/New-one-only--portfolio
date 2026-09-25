@@ -49,7 +49,9 @@ export default function TechnicalSkillsCanvas({ skills }) {
     const draw = (time) => {
       const width = state.width
       const height = state.height
-      if (!width || !height) return
+      if (!width || !height || !state.visible) return
+      if (!reduceMotion && time - (state.lastPaint || 0) < 32) return
+      state.lastPaint = time
       const center = width / 2
       const spacing = Math.max(118, Math.min(168, width * .18))
       const cycle = items.length * spacing
@@ -179,7 +181,6 @@ export default function TechnicalSkillsCanvas({ skills }) {
     canvas.addEventListener('pointerenter', enter)
     canvas.addEventListener('pointerleave', leave)
     resize()
-    state.visible = true
     frameRef.current = window.requestAnimationFrame(animate)
     return () => {
       window.cancelAnimationFrame(frameRef.current)

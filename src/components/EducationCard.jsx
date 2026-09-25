@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function EducationCard({ item, index }) {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false)
@@ -8,6 +9,23 @@ export default function EducationCard({ item, index }) {
 
   const previewPages = useMemo(() => item.previewPages ?? [item.previewImage], [item.previewImage, item.previewPages])
   const currentPreview = previewPages[previewIndex] ?? previewPages[0]
+
+  useEffect(() => {
+    if (!isCertificateOpen) return undefined
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setIsCertificateOpen(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isCertificateOpen])
 
   const handleScrollCertificate = (event) => {
     if (previewPages.length <= 1) return
@@ -37,15 +55,15 @@ export default function EducationCard({ item, index }) {
       )}
     </motion.article>
 
-    <AnimatePresence>
+    {createPortal(<AnimatePresence>
       {isCertificateOpen && currentPreview && (
         <motion.div className="certificate-modal-backdrop" initial={{ opacity: 1 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsCertificateOpen(false)}>
-          <motion.div className="certificate-modal" initial={{ opacity: 1, y: 28, rotateX: 52, scale: 0.92 }} animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }} exit={{ opacity: 0, y: 18, rotateX: 42, scale: 0.96 }} transition={{ type: 'spring', stiffness: 220, damping: 22 }} onClick={(event) => event.stopPropagation()}>
+          <motion.div className="certificate-modal" role="dialog" aria-modal="true" aria-labelledby={`certificate-modal-title-${index}`} initial={{ opacity: 1, y: 28, rotateX: 52, scale: 0.92 }} animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }} exit={{ opacity: 0, y: 18, rotateX: 42, scale: 0.96 }} transition={{ type: 'spring', stiffness: 220, damping: 22 }} onClick={(event) => event.stopPropagation()}>
             <button type="button" className="certificate-modal-close" aria-label="Close certificate" onClick={() => setIsCertificateOpen(false)}>×</button>
 
             <div className="certificate-modal-header">
               <span className="education-badge">Certification</span>
-              <h4>{item.qualification}</h4>
+              <h4 id={`certificate-modal-title-${index}`}>{item.qualification}</h4>
             </div>
 
             <div className="certificate-frame" onWheel={handleScrollCertificate}>
@@ -76,6 +94,6 @@ export default function EducationCard({ item, index }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>, document.body)}
   </>
 }

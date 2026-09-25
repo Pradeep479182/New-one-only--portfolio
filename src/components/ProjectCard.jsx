@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight, Code2, X } from 'lucide-react'
+import { createPortal } from 'react-dom'
 import { getFallbackProjectImage, getProjectImage } from '../services/projectImages'
 
 export default function ProjectCard({ project, index, activeIndex = 0, onActivate, onSwipe, onDetailsChange, carousel = false }) {
@@ -22,10 +23,11 @@ export default function ProjectCard({ project, index, activeIndex = 0, onActivat
     if (!detailsOpen) return undefined
     const closeOnEscape = (event) => { if (event.key === 'Escape') closeDetails() }
     document.addEventListener('keydown', closeOnEscape)
+    const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', closeOnEscape)
-      document.body.style.overflow = ''
+      document.body.style.overflow = previousOverflow
     }
   }, [closeDetails, detailsOpen])
 
@@ -82,6 +84,6 @@ export default function ProjectCard({ project, index, activeIndex = 0, onActivat
       <div className="project-thumbnail"><img src={image} alt={`${project.name} project preview`} onError={imageFallback} /><div className="project-thumbnail-overlay" /><span>{project.label.split(' / ')[0]}</span></div>
       <div className="project-body"><div className="project-top"><span className="project-type">{project.label.split(' / ')[1]}</span><span className="project-detail-link">View details <ArrowUpRight size={14} /></span></div><h3>{project.name}</h3><p>{project.summary}</p><div className="project-topics">{project.technologies.slice(0, 3).map((technology) => <span key={technology}>{technology}</span>)}</div><div className="project-links"><button type="button" onClick={(event) => { event.stopPropagation(); openDetails() }}>View Details <ArrowUpRight size={15} /></button></div></div>
     </motion.article>
-    <AnimatePresence>{detailsOpen && <div className="project-modal-backdrop" role="presentation" onClick={closeDetails}><motion.div className="project-modal" role="dialog" aria-modal="true" aria-labelledby={`project-modal-title-${project.id}`} initial={{ opacity: 0, y: 18, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: .98 }} transition={{ duration: .22 }} onClick={(event) => event.stopPropagation()}><button className="project-modal-close" type="button" onClick={closeDetails} aria-label="Close project details"><X size={18} /></button><img src={image} alt={`${project.name} preview`} className="project-modal-image" onError={imageFallback} /><div className="project-modal-content"><span className="eyebrow">{project.label}</span><h2 id={`project-modal-title-${project.id}`}>{project.name}</h2><p className="project-modal-summary">{project.summary}</p><div className="project-modal-section"><h3>Project details</h3><p>{project.details}</p></div><div className="project-modal-section"><h3>Technologies</h3><div className="project-topics project-modal-topics">{project.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></div><div className="project-modal-actions"><a className="button" href={project.codeUrl} target="_blank" rel="noopener noreferrer"><Code2 size={16} /> View Code</a>{project.liveUrl && <a className="button button--ghost" href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16} /> Live Demo</a>}</div></div></motion.div></div>}</AnimatePresence>
+    {createPortal(<AnimatePresence>{detailsOpen && <div className="project-modal-backdrop" role="presentation"><motion.div className="project-modal" role="dialog" aria-modal="true" aria-labelledby={`project-modal-title-${project.id}`} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 24 }} transition={{ duration: .32, ease: [0.22, 1, 0.36, 1] }}><button className="project-modal-close" type="button" onClick={closeDetails} aria-label="Close project details"><X size={22} /></button><img src={image} alt={`${project.name} preview`} className="project-modal-image" onError={imageFallback} /><div className="project-modal-content"><span className="eyebrow">{project.label}</span><h2 id={`project-modal-title-${project.id}`}>{project.name}</h2><p className="project-modal-summary">{project.summary}</p><div className="project-modal-section"><h3>Project details</h3><p>{project.details}</p></div><div className="project-modal-section"><h3>Key features</h3><ul className="project-modal-features">{project.keyFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></div><div className="project-modal-section"><h3>Technologies</h3><div className="project-topics project-modal-topics">{project.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></div><div className="project-modal-actions"><a className="button" href={project.codeUrl} target="_blank" rel="noopener noreferrer"><Code2 size={16} /> View Code</a>{project.liveUrl && <a className="button button--ghost" href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16} /> Live Demo</a>}</div></div></motion.div></div>}</AnimatePresence>, document.body)}
   </>
 }
